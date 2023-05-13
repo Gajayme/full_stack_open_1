@@ -7,11 +7,43 @@ const FeedbackButton = ({title, handler}) => {
 }
 
 const Display = ({title, count}) => {
-	return <p>{title} {count}</p>
+	if (isNaN(count)){
+		return <p>{title} -</p>
+	} else {
+		return <p>{title} {count}</p>
+	}
+}
+
+const Statistics = ({good, bad, neutral}) => {
+
+	const calculateAverage = (good, neutral, bad) => {
+		return (((good * 1) + (bad * -1)) / (good + neutral + bad))
+	}
+
+	const calculateGoodPct = (good, neutral, bad) => {
+		return ((good) / (good + neutral + bad))
+	}
+
+	if ((good + neutral + bad) > 0) {
+		return <>
+		<h1 >statistics</h1>
+			<Display title='good' count={good}/>
+			<Display title='neutral' count={neutral}/>
+			<Display title='bad' count={bad}/>
+			<Display title='all' count={good + neutral + bad}/>
+			<Display title='average' count={calculateAverage(good, neutral, bad)}/>
+			<Display title='goodPct' count={calculateGoodPct(good, neutral, bad)}/>
+		</>
+	} else {
+		return <>
+			<h1 >statistics</h1>
+			<p>no feedback given</p>
+		</>
+	}
+
 }
 
 const App = () => {
-	// save clicks of each button to its own state
 	const [good, setGood] = useState(0)
 	const [neutral, setNeutral] = useState(0)
 	const [bad, setBad] = useState(0)
@@ -26,17 +58,13 @@ const App = () => {
 		setBad(bad + 1);
 	}
 
-
   return (
     <div>
 		<h1 >give feedback</h1>
 		<FeedbackButton title = 'good' handler = {IncreaseGood}/>
 		<FeedbackButton title = 'neutral' handler = {IncreaseNeutral}/>
 		<FeedbackButton title = 'bad' handler = {IncreaseBad}/>
-		<h1 >statistics</h1>
-		<Display title='good' count={good}/>
-		<Display title='neutral' count={neutral}/>
-		<Display title='bad' count={bad}/>
+		<Statistics good={good} bad={bad} neutral={neutral}/>
     </div>
   )
 }
