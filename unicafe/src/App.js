@@ -6,33 +6,32 @@ const FeedbackButton = ({title, handler}) => {
 	)
 }
 
-const Display = ({title, count}) => {
-	if (isNaN(count)){
-		return <p>{title} -</p>
-	} else {
-		return <p>{title} {count}</p>
-	}
+const Display = ({title, value}) => {
+	return (
+		<tr>
+			<td>{title}</td>
+			<td>{value}</td>
+		</tr>
+	)
 }
 
 const Statistics = ({good, bad, neutral}) => {
 
-	const calculateAverage = (good, neutral, bad) => {
-		return (((good * 1) + (bad * -1)) / (good + neutral + bad))
-	}
-
-	const calculateGoodPct = (good, neutral, bad) => {
-		return ((good) / (good + neutral + bad))
-	}
+	const calculateAverage = (good, neutral, bad) => ((good - bad) / (good + neutral + bad))
+	const calculateGoodPct = (good, neutral, bad) => (good / (good + neutral + bad))
 
 	if ((good + neutral + bad) > 0) {
 		return <>
 		<h1 >statistics</h1>
-			<Display title='good' count={good}/>
-			<Display title='neutral' count={neutral}/>
-			<Display title='bad' count={bad}/>
-			<Display title='all' count={good + neutral + bad}/>
-			<Display title='average' count={calculateAverage(good, neutral, bad)}/>
-			<Display title='goodPct' count={calculateGoodPct(good, neutral, bad)}/>
+		<table>
+			<Display title='good' value={good}/>
+			<Display title='neutral' value={neutral}/>
+			<Display title='bad' value={bad}/>
+			<Display title='all' value={good + neutral + bad}/>
+			<Display title='average' value={calculateAverage(good, neutral, bad)}/>
+			<Display title='goodPct' value={calculateGoodPct(good, neutral, bad)}/>
+		</table>
+
 		</>
 	} else {
 		return <>
