@@ -12,6 +12,15 @@ const Votes = ({votesCount}) => {
 	)
 }
 
+const MostPopularAnecdote = ({anecdote}) => {
+	return (
+		<>
+			<h1>Anecdote with most votes</h1>
+			<p>{anecdote}</p>
+		</>
+	)
+}
+
 const App = () => {
 	const anecdotes = [
 		'If it hurts, do it more often.',
@@ -31,9 +40,13 @@ const App = () => {
 	const randomAnecdote = () => setSelected(getRandomInt(anecdotes.length - 1))
 
 	const updateVotes = () => {
-		let arr = {...votesArr}
+		let arr = [...votesArr]
 		arr[selected] += 1
 		return (setVotesArr(arr))
+	}
+
+	const findMostVotes = () => {
+		return anecdotes[votesArr.indexOf(Math.max(...votesArr))]
 	}
 
 	return (
@@ -44,6 +57,7 @@ const App = () => {
 		<Button handler = {randomAnecdote} title = 'next anecdote'/>
 		<br/>
 		<Votes votesCount={votesArr[selected]}/>
+		<MostPopularAnecdote anecdote={findMostVotes()}/>
 	</>
 	)
 }
